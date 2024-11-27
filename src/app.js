@@ -2,27 +2,21 @@ const express = require("express");
 
 const app = express();
 
-// Import the middleware function using require
-const { authAdmin, authUser } = require("./middlewares/auth");
+app.get("/getUserData", (req, res) => {
+  try {
+    // logic of DB call and get user data
 
-app.use("/admin", authAdmin); // Use authAdmin middleware on /admin routes
-
-app.post("/user/login", (req, res, next) => {
-  res.send("User loggedin successfully!!!");
+    throw new Error("Error!!!");
+    res.send("User Data Sent");
+  } catch (err) {
+    res.status(500).send("Some Error contact support team!!!");
+  }
 });
 
-// User data route
-app.post("/user/data", authUser, (req, res, next) => {
-  res.send("User data sent!!!");
-});
-
-// Admin routes
-app.get("/admin/getAllData", (req, res) => {
-  res.send("All Data Sent");
-});
-
-app.get("/admin/deleteUser", (req, res) => {
-  res.send("Deleted a user");
+app.use("/", (err, req, res, next) => {
+  if (err) {
+    res.status(500).send("Something went wrong!!!");
+  }
 });
 
 app.listen(7777, () => {
