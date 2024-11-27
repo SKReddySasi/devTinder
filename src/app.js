@@ -2,21 +2,19 @@ const express = require("express");
 
 const app = express();
 
-// This middleware will run for **all HTTP methods** on the '/example' route
-app.all("/example", (req, res, next) => {
-  next(); // Pass control to the next matching handler
-  // res.send("This route handles all HTTP methods");
+// This middleware will run for every incoming request to the server
+app.use("/", (req, res, next) => {
+  console.log(`Request method: ${req.method} at ${req.url}`);
+  next(); // Pass the request to the next handler
 });
 
-// Example routes with different methods
-app.get("/example", (req, res) => {
-  console.log("GET called");
-  res.send("GET request to /example");
+// Example route
+app.get("/home", (req, res) => {
+  res.send("Welcome to the Home page");
 });
 
-app.post("/example", (req, res) => {
-  console.log("POST called");
-  res.send("POST request to /example");
+app.post("/home", (req, res) => {
+  res.send("POST request to Home page");
 });
 
 app.listen(7777, () => {
