@@ -2,21 +2,29 @@ const express = require("express");
 
 const app = express();
 
-// This middleware will run for every incoming request to the server
-app.use("/", (req, res, next) => {
-  console.log(`Request method: ${req.method} at ${req.url}`);
-  next(); // Pass the request to the next handler
+// Import the middleware function using require
+const { authAdmin, authUser } = require("./middlewares/auth");
+
+app.use("/admin", authAdmin); // Use authAdmin middleware on /admin routes
+
+app.post("/user/login", (req, res, next) => {
+  res.send("User loggedin successfully!!!");
 });
 
-// Example route
-app.get("/home", (req, res) => {
-  res.send("Welcome to the Home page");
+// User data route
+app.post("/user/data", authUser, (req, res, next) => {
+  res.send("User data sent!!!");
 });
 
-app.post("/home", (req, res) => {
-  res.send("POST request to Home page");
+// Admin routes
+app.get("/admin/getAllData", (req, res) => {
+  res.send("All Data Sent");
+});
+
+app.get("/admin/deleteUser", (req, res) => {
+  res.send("Deleted a user");
 });
 
 app.listen(7777, () => {
-  console.log("Server is running on port 7777");
+  console.log("Server is successfully running on port 7777");
 });
